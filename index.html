@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Hugo 0.66.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+  <link rel="stylesheet" href="../css/normalize.css">
+  <link rel="stylesheet" href="../css/skeleton.css">
+  <link rel="stylesheet" href="../css/custom.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="alternate" href="index.xml" type="application/rss+xml" title="Speech Research">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+  <title>Improving the controllability of emotional text-to-speech using natural language guidance by contrastive
+    learning & Diffusion Model</title>
+</head>
+
+<body rightmargin="150" leftmargin="150" topmargin="100" bottommargin="100" line-height:160%>
+
+  <style>
+    .img-container figcaption {
+      text-align: center;
+    }
+  </style>
+
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+      font-size: 70%
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  </style>
+
+  <font size="5">
+
+    <p>&nbsp;</p>
+    <p> </p>
+    <div class="container">
+      <header role="banner"></header>
+      <article><br />
+        <h1 align="center"><span style="font-size: 120%;">Improving the controllability of emotional text-to-speech
+            using natural language guidance by contrastive learning & Diffusion Model</span></h1>
+        <br />
+        <p style="line-height: 1;" align="center"><strong> Anonymous submission to SLT 2024 </strong></p>
+
+
+        <section><br />
+
+          <h2 id="abstract">Abstract</h2>
+          <p style="text-align: justify; font-size: 70%;">Flow-based emotional text-to-speech (TTS) models have
+            exhibited great promise in producing high-fidelity emotional speech. However, an important aspect of
+            emotional TTS is the controllability of the output. Current methods rely on emotional labels or reference
+            speech to control the synthesized emotion.While these methods can produce samples that mimick a particular
+            style or correspond to a specific label, they are still lacking in granularity. We introduce a text-based
+            method which allows us to benefit from the ingrained compositionality of natural language. Specifically, we
+            use the text encoder of ParaCLAP -- a recently introduced contrastive language-audio pretraining (CLAP)
+            model for computational paralinguistics -- to condition a diffusion-based model TTS model. ParaCLAP is
+            trained to closely associate text with paralinguistic attributes of speech. This enables us to control the
+            generation process with an emphasis on attributes like pitch, jitter, and loudness. Our experiments show
+            that this conditioning allows us to generate more diverse emotional speech without jeopardizing overall
+            fidelity.</p>
+
+
+          <table>
+            <tr>
+              <td><img src="img/overview.png" alt="overview" , width="90%"></td>
+              <td><img src="img/system.png" alt="system" , width="70%"></td>
+            </tr>
+            <tr style="font-size: 70%;">
+              <td>A high-level overview of ParaEVITS. Above the dotted line is the training process of the ParaCLAP-NP,
+                through which learn an aligned representations for emotion and captions. Below the dotted line is our
+                emotional TTS generation process: a ParaCLAP-NP text embedding is first processdy by the diffusion prior
+                to produce the a ParaCLAP emotion embedding, and then emo adaptor will map the emotion embedding into a
+                smaller size, which will be used as the emotion input of the emotional VITS to synthesis a final
+                waveform.</td>
+              <td>The two-stage training process for our system. Stage 1 involves training processing of eVITS. Stage 2
+                incorporates captioning through ParaCLAP-NP text encoder and diffusion models. The red lines indicate
+                the inference phase, where the diffusion model utilizes captions to refine the emotional characteristics
+                in the synthesized speech.</td>
+            </tr>
+          </table>
+
+
+
+          <h2 id="samples"></ion-icon>TTS Samples</h2>
+
+          <table class="table" style="table-layout: fixed; word-break: break-word;" align="center">
+            <h4 id="samples"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;<i>Attribute Control</i></h2>
+              <p style="font-size: 70%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Computational Paralinguistics (CP) captions
+                as condition to guide the emotion output</p>
+              <thead>
+                <tr>
+                  <td scope="col" width="50%" style="font-size: 70%;">No Caption</td>
+                  <td scope="col" width="50%" style="font-size: 70%;">No Caption</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/n/1-1.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/n/1-2.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                </tr>
+
+                <thead>
+                  <tr>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b> normal pitch and </b> has a
+                      <b> normal pitch variation</b> and is <b>loud</b> and has a <b>high equivalent sound level</b> and
+                      has a <b>low jitter</b> and has a <b>low shimmer</b> and emotion is <b>angry</b></td>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>low pitch</b> and has a
+                      <b>normal pitch variation</b> and is <b>loud</b> and has a <b>high equivalent sound level</b> and
+                      has a <b>low jitter</b> and has a <b>low shimmer</b> and emotion is <b>angry</b></td>
+                  </tr>
+                </thead>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/a/1.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/a/2.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                </tr>
+                <thead>
+                  <tr>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>high pitch</b> and has a <b>normal pitch
+                      variation</b> and <b>loudness</b> is <b>just about right</b> and has a <b>normal jitter</b> and has a <b>normal shimmer</b> and
+                      emotion is <b>happy</b></td>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>normal pitch</b> and has a <b>high pitch
+                      variation</b> and loudness is <b>just about right</b> and has a <b>low jitter</b> and has a <b>normal shimmer</b> and
+                      emotion is <b>happy</b>
+                    </td>
+                    </td>
+                  </tr>
+                </thead>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/h/1.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/h/2.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                </tr>
+
+                <thead>
+                  <tr>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>high pitch</b> and has a <b>normal pitch
+                      variation</b> and is <b>loud</b> and has a <b>normal jitter</b> and has a <b>normal shimmer</b> and emotion is <b>surprise</b>
+                    </td>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>high pitch</b> and has a <b>normal pitch
+                      variation</b> and is <b>loud</b> and has a <b>normal jitter</b> and has a <b>normal shimmer</b> and emotion is <b>surprise</b>
+                    </td>
+                  </tr>
+                </thead>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/s/1.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/s/2.wav" autoplay="autoplay" />Your browser does not support the audio element.
+                    </audio></td>
+                </tr>
+
+                <thead>
+                  <tr>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>normal pitch</b> and has a <b>low pitch
+                      variation</b> and is <b>almost silent</b> and has a <b>low jitter</b> and has a <b>low shimmer</b> and emotion is <b>sad</b>
+                    </td>
+                    <td scope="col" width="50%" style="font-size: 60%;">speaker has a <b>low pitch</b> and has a <b>low pitch
+                      variation</b> and is <b>loud</b> and has a <b>low jitter</b> and has a <b>low shimmer</b> and emotion is <b>sad</b>
+                    </td>
+                  </tr>
+                </thead>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/sa/1.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/1/sa/2.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                </tr>
+              </tbody>
+          </table>
+
+          <!-- Diversity -->
+          <table class="table" style="table-layout: fixed; word-break: break-word;" align="center">
+            <h4 id="samples"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;<i>Diversity synthesis</i></h4>
+            <p style="font-size: 70%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Benefiting from the generative capability of
+              diffusion models, ParaEVITS can produce diverse samples with the same caption by starting from different
+              initial states.</p>
+            <tbody>
+              <tr>
+                <td scope="col" width="50%" colspan="2" style="font-size: 60%;">speaker has a <b>normal pitch</b> and has a
+                  <b>normal pitch variation</b> and is <b>loud</b> and has a <b>high equivalent sound level</b> and has a <b>low jitter</b> and has
+                  a <b>low shimmer</b> and emotion is <b>angry</b></td>
+              </tr>
+              <tr>
+                <td scope="row"><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/a/1-1-yo.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+                <td><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/a/1-2-yo.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+              </tr>
+              <tr>
+                <td scope="col" width="50%" colspan="2" style="font-size: 60%;">speaker has a <b>normal pitch</b> and has a
+                  <b>high pitch variation</b> and <b>loudness</b> is <b>just about right</b> and has a <b>low jitter</b> and has a <b>normal shimmer</b>
+                  and emotion is <b>happy</b></td>
+              </tr>
+              <tr>
+                <td scope="row"><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/h/1-1-He.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+                <td><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/h/1-2-He.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+              </tr>
+
+              <tr>
+                <td scope="col" width="50%" colspan="2" style="font-size: 60%;">speaker has a <b>high pitch</b> and has a
+                  <b>normal pitch variation</b> and loudness is <b>just about right</b> and has a <b>normal jitter</b> and has a <b>normal
+                  shimmer</b> and emotion is <b>surprise</b></td>
+              </tr>
+              <tr>
+                <td scope="row"><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/s/1-1-s.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+                <td><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/s/1-2-s.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+              </tr>
+
+              <tr>
+                <td scope="col" width="50%" colspan="2" style="font-size: 60%;">speaker has a <b>normal pitch</b> and has a <b>low
+                  pitch variation</b> and is <b>almost silent</b> and has a <b>low jitter</b> and has a <b>low shimmer</b> and emotion is <b>sad</b>
+                </td>
+              </tr>
+              <tr>
+                <td scope="row"><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/sa/1-1-w.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+                <td><audio controls="controls" style="width: 100%;">
+                    <source src="wav/2/sa/1-2-w.wav" autoplay="autoplay" />Your browser does not support the audio
+                    element.
+                  </audio></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Mix -->
+          <table class="table" style="table-layout: fixed; word-break: break-word;" align="center">
+            <h4 id="samples"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;<i>Emotion Mix (
+                Experimental)</i></h2>
+              <p style="font-size: 70%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using spherical interpolation, we can blend
+                the initial states of two emotions before the diffusion process, yielding intermediate emotion
+                representations and resulting in a mixture of emotional expressions.</p>
+              <thead>
+                <tr>
+                  <td scope="col" width="20%" style="font-size: 70%;">Emotion 1</td>
+                  <td scope="col" width="60%" colspan="5" style="font-size: 70%;">Rotation angle</td>
+                  <td scope="col" width="20%" style="font-size: 70%;">Emotion 2</td>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td scope="col" width="20%" style="font-size: 70%;">Angry</td>
+                  <td scope="col" width="12%" style="font-size: 70%;">0.1</td>
+                  <td scope="col" width="12%" style="font-size: 70%;">0.2</td>
+                  <td scope="col" width="12%" style="font-size: 70%;">0.3</td>
+                  <td scope="col" width="12%" style="font-size: 70%;">0.4</td>
+                  <td scope="col" width="12%" style="font-size: 70%;">0.5</td>
+                  <td scope="col" width="20%" style="font-size: 70%;">Surprise</td>
+                </tr>
+                <tr>
+                  <td scope="row"><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-0.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-01.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-02.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-03.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-04.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-05.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                  <td><audio controls="controls" style="width: 100%;">
+                      <source src="wav/3/1-1-1.wav" autoplay="autoplay" />Your browser does not support the audio
+                      element.
+                    </audio></td>
+                </tr>
+              </tbody>
+          </table>
+          <div class="container">&nbsp;</div>
+        </section>
+      </article>
+    </div>
